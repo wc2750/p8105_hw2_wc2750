@@ -9,6 +9,7 @@ output: github_document
 # load library
 library(tidyverse)
 library(readxl)
+library(dplyr)
 ```
 
 ## Problem 1
@@ -70,4 +71,49 @@ left_join(precip_df, month_df, by = "month")
 ```
 
 This dataset contains information from the Mr. Trashwheel trash collector in Baltimore, Maryland. As trash enters the inner harbor, the trashwheel collects that trash, and stores it in a dumpster. The dataset contains information on year, month, and trash collected, include some specific kinds of trash. There are a total of `r nrow(trashwheel_df)` rows in our final dataset. Additional data sheets include month precipitation data. The total precipitaion in 2018 is `r sum(precip_2018$total)`. The median number of sports balls in a dumpster in 2017 is `r median(trashwheel_df$sports_balls[trashwheel_df$year == 2017])`.
+
+## Problem 2
+
+Read and clean the NYC Transit dataset.
+```{r message = FALSE}
+nyctransit_df = 
+  read_csv("./data/NYC_Transit_Subway_Entrance_And_Exit_Data.csv") %>%
+  janitor::clean_names() %>%
+  select(line, station_name, station_latitude, station_longitude, route1:route11, entrance_type, entry, vending, ada) %>%
+  mutate(entry = ifelse(entry == "YES", TRUE, FALSE))
+```
+
+The NYC Transit dataset includes variables: `r colnames(nyctransit_df)`. As so far, I've cleaned the columns' names, selected the wanted columns, and converted the entry variable from character (YES vs NO) to a logical variable. The dimension of this dataset is `r nrow(nyctransit_df)` rows * `r ncol(nyctransit_df)` columns.
+
+Additional information about NYC Transit dataset.
+```{r}
+# reformat distinct stations dataset
+diststation_df = distinct(nyctransit_df, line, station_name, .keep_all = TRUE)
+# number of distinct stations
+nrow(diststation_df)
+# number of stations are ADA compliant
+nrow(filter(diststation_df, ada == "TRUE"))
+# proportion of station entrances/exits without vending allow entrance
+sum(nyctransit_df$vending == "NO" & nyctransit_df$entry == "TRUE")/sum(nyctransit_df$vending == "NO")
+```
+
+Reformat data with distinct route number and route name
+```{r}
+# reformat distinct route number and route name dataset for distinct stations
+route_diststation_df = diststation_df %>%
+  # convert route8:route11 to character variable
+  mutate_at(vars(route8:route11), as.character) %>% 
+  pivot_longer(
+  route1:route11,
+  names_to = "route",
+  values_to = "train")
+```
+
+Additional information about serving A train
+```{r}
+# number of distinct stations serve the A train
+nrow(filter(route_diststation_df, train == "A"))
+# number of distinct stations serve the A trian and are ADA compliant
+nrow(filter(route_diststation_df, train == "A" & ada == "TRUE"))
+```
 

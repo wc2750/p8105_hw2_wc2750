@@ -198,10 +198,10 @@ merge_df =
 merge_df
 ```
 
-For pols_month_df, the dimension is `r nrow(pols_month_df)` rows * `r ncol(pols_month_df)` columns. The year ranges from `r min(pols_month_df$year)` to `r max(pols_month_df$year)`. The variables include: `r colnames(nyctransit_df)`. The president variable informs whether the president was democratic or republican. The values of the following variables inform the number of republican/democratic governors/senators/representatives on the associated date.
+For pols_month_df, the dimension is `r nrow(pols_month_df)` rows * `r ncol(pols_month_df)` columns. The year ranges from `r min(pols_month_df$year)` to `r max(pols_month_df$year)`. The variables include: `r colnames(pols_month_df)`. The president variable informs whether the president was democratic or republican. The values of the following variables inform the number of republican/democratic governors/senators/representatives on the associated date.
 
 For snp_df, the dimension is `r nrow(snp_df)` rows * `r ncol(snp_df)` columns. The year ranges from `r min(snp_df$year)` to `r max(snp_df$year)`. The close variable informs the closing values of the S&P stock index on the associated date.
 
 For unemployment_df, the dimension is `r nrow(unemployment_df)` rows * `r ncol(unemployment_df)` columns. The year ranges from `r min(unemployment_df$year)` to `r max(unemployment_df$year)`. The unemployment rate informs the percentage of unemployment in certain month of the associated year.
 
-For the merge_df, the dimension is `r nrow(merge_df)` rows * `r ncol(merge_df)` columns. The year ranges from `r min(merge_df$year)` to `r max(merge_df$year)`. It is a merged dataset which informs the number of national politicians, the closing value, and unemployment rate. 
+For the merge_df, the dimension is `r nrow(merge_df)` rows * `r ncol(merge_df)` columns. The year ranges from `r min(merge_df$year)` to `r max(merge_df$year)`. It is a merged dataset which informs the number of national politicians, the closing value, and the unemployment rate. 
